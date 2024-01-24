@@ -1,39 +1,49 @@
-
 package com.javaproject.controller;
 
 import com.javaproject.model.Account;
 import com.javaproject.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
 
-    private final AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
-    @GetMapping("/{id}")
-    public Account getAccountById(@PathVariable long id) {
-        return accountService.getAccountById(id);
+    // Endpoint to find an account by user ID
+    @GetMapping("/{userId}")
+    public ResponseEntity<Account> findAccountByUserId(@PathVariable Long userId) {
+        Account account = accountService.findAccountByUserId(userId);
+        if (account != null) {
+            return new ResponseEntity<>(account, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping("/username/{username}")
-    public Account getAccountByUsername(@PathVariable String username) {
-        return accountService.getAccountByUsername(username);
+    // Endpoint to find an active account by user ID
+    @GetMapping("/{userId}/active")
+    public ResponseEntity<Account> findActiveAccountByUserId(@PathVariable Long userId) {
+        Account account = accountService.findActiveAccountByUserId(userId);
+        if (account != null) {
+            return new ResponseEntity<>(account, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteAccountById(@PathVariable long id) {
-        accountService.deleteAccountById(id);
-    }
-
-    @DeleteMapping("/username/{username}")
-    public void deleteAccountByUsername(@PathVariable String username) {
-        accountService.deleteAccountByUsername(username);
+    // Endpoint to deactivate an account
+    @PostMapping("/{userId}/deactivate")
+    public ResponseEntity<String> deactivateAccount(@PathVariable Long userId) {
+        accountService.deactivateAccount(userId);
+        return new ResponseEntity<>("Account deactivated successfully", HttpStatus.OK);
     }
 }

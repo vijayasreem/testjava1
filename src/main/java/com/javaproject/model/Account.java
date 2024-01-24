@@ -1,38 +1,45 @@
 
 package com.javaproject.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "account")
 public class Account {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    
-    private String username;
-    
-    // Add other properties and methods as needed
-    
-    public long getId() {
+    private Long id;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "active")
+    private boolean active;
+
+    // Getters and Setters
+
+    public Long getId() {
         return id;
     }
-    
-    public void setId(long id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getUsername() {
-        return username;
+
+    public Long getUserId() {
+        return userId;
     }
-    
-    public void setUsername(String username) {
-        this.username = username;
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-    
-    // Add other getters and setters as needed
-    
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

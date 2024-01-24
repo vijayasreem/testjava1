@@ -1,4 +1,3 @@
-
 package com.javaproject.service;
 
 import com.javaproject.model.Account;
@@ -8,28 +7,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
-    
-    private final AccountRepository accountRepository;
-    
+
+    private AccountRepository accountRepository;
+
     @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
-    
-    public Account getAccountById(long id) {
-        return accountRepository.findById(id);
+
+    // Method to find an account by user ID
+    public Account findAccountByUserId(Long userId) {
+        return accountRepository.findByUserId(userId);
     }
-    
-    public Account getAccountByUsername(String username) {
-        return accountRepository.findByUsername(username);
+
+    // Method to find an active account by user ID
+    public Account findActiveAccountByUserId(Long userId) {
+        return accountRepository.findByUserIdAndActiveTrue(userId);
     }
-    
-    public void deleteAccountById(long id) {
-        accountRepository.deleteById(id);
+
+    // Method to deactivate an account
+    public void deactivateAccount(Long userId) {
+        accountRepository.deactivateAccount(userId);
     }
-    
-    public void deleteAccountByUsername(String username) {
-        accountRepository.deleteByUsername(username);
-    }
-    
 }
